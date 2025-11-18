@@ -17,11 +17,15 @@ export default function Stage3Screen() {
   const { draft, updateDraft, calculateProjectedStat } = useWagerDraft();
 
   useEffect(() => {
-    if (draft.player && draft.statType && draft.projectedStat === 0) {
-      const projected = calculateProjectedStat(draft.player, draft.statType);
-      updateDraft({ projectedStat: projected });
-      console.log('Calculated projected stat:', projected);
-    }
+    const computeProjection = async () => {
+      if (draft.player && draft.statType && draft.projectedStat === 0) {
+        const projected = await calculateProjectedStat(draft.player, draft.statType);
+        updateDraft({ projectedStat: projected });
+        console.log('Calculated projected stat:', projected);
+      }
+    };
+
+    computeProjection();
   }, [draft.player, draft.statType, draft.projectedStat, calculateProjectedStat, updateDraft]);
 
   const handleNext = () => {

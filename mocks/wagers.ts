@@ -1,4 +1,5 @@
 import { Player, StatType } from './players';
+import { LadderRung } from '@/contexts/WagerContext';
 
 export type WagerDirection = 'over' | 'under';
 export type RiskLevel = 'low' | 'medium' | 'high';
@@ -16,6 +17,7 @@ export interface Wager {
   status: WagerStatus;
   actualStat?: number;
   payout?: number;
+  ladderRungs?: LadderRung[];
   createdAt: Date;
 }
 

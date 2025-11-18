@@ -17,23 +17,29 @@ export default function Stage2Screen() {
   const animatedValue = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    const ladderRungs = calculateLadderRungs(
-      draft.breakeven,
-      draft.stake,
-      selectedRisk,
-      draft.direction
-    );
-    updateDraft({ riskLevel: selectedRisk, ladderRungs });
+    const computeLadder = async () => {
+      const ladderRungs = await calculateLadderRungs(
+        draft.breakeven,
+        draft.stake,
+        selectedRisk,
+        draft.direction,
+        draft.player,
+        draft.statType
+      );
+      updateDraft({ riskLevel: selectedRisk, ladderRungs });
 
-    Animated.spring(animatedValue, {
-      toValue: 1,
-      useNativeDriver: true,
-      tension: 40,
-      friction: 7,
-    }).start(() => {
-      animatedValue.setValue(0);
-    });
-  }, [selectedRisk, draft.breakeven, draft.stake, draft.direction, calculateLadderRungs, updateDraft, animatedValue]);
+      Animated.spring(animatedValue, {
+        toValue: 1,
+        useNativeDriver: true,
+        tension: 40,
+        friction: 7,
+      }).start(() => {
+        animatedValue.setValue(0);
+      });
+    };
+
+    computeLadder();
+  }, [selectedRisk, draft.breakeven, draft.stake, draft.direction, draft.player, draft.statType, calculateLadderRungs, updateDraft, animatedValue]);
 
   const handleRiskSelect = (risk: RiskLevel) => {
     if (Platform.OS !== 'web') {
